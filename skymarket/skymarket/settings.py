@@ -15,9 +15,7 @@ from pathlib import Path
 import rest_framework.authentication
 from dotenv import load_dotenv
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-if os.path.exists(dotenv_path):
-    load_dotenv(dotenv_path)
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -106,7 +104,6 @@ DJOSER = {
     },
     "LOGIN_FIELD": "email",
 }
-
 DATABASES = {
     'default': {
         'ENGINE': os.getenv("DB_ENGINE"),
@@ -114,7 +111,7 @@ DATABASES = {
         'USER': os.getenv("DB_USER"),
         'PASSWORD': os.getenv("DB_PASSWORD"),
         'HOST': os.getenv("DB_HOST"),
-        'PORT': os.getenv("DB_PORT")
+        'PORT': os.getenv("DB_PORT"),
     }
 }
 
@@ -165,7 +162,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-# AUTH_USER_MODEL = "users.User"
+AUTH_USER_MODEL = "users.User"
 
 # Include Email Backend
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
