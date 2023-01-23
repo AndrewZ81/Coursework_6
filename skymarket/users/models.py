@@ -10,8 +10,8 @@ class UserRoles(TextChoices):
     """
     Описывает роли пользователя
     """
-    USER = "User", _("user")
-    ADMIN = "Admin", _("admin")
+    USER = "user", _("user")
+    ADMIN = "admin", _("admin")
 
 
 class User(AbstractBaseUser):
