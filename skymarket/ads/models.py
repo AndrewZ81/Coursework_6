@@ -1,12 +1,31 @@
 from django.conf import settings
-from django.db import models
+from django.db.models import Model
+from django.db.models import CharField, ImageField, PositiveIntegerField, ForeignKey, \
+    DateTimeField, CASCADE
+
+from users.models import User
 
 
-class Ad(models.Model):
-    # TODO добавьте поля модели здесь
-    pass
+class Ad(Model):
+    """
+    Описывает объявление
+    """
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "Объявление"
+        verbose_name_plural = "Объявления"
+
+    def __str__(self):
+        return self.title
+
+    title = CharField(null=True, db_index=True, max_length=100)
+    price = PositiveIntegerField(null=True, db_index=True)
+    description = CharField(null=True, blank=True, max_length=2000)
+    image = ImageField(null=True, blank=True, upload_to="django_media")
+    author = ForeignKey(User, null=True, on_delete=CASCADE)
+    created_at = DateTimeField(null=True, auto_now_add=True)
 
 
-class Comment(models.Model):
+class Comment(Model):
     # TODO добавьте поля модели здесь
     pass
