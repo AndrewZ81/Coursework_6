@@ -1,7 +1,6 @@
-from django.conf import settings
 from django.db.models import Model
 from django.db.models import CharField, ImageField, PositiveIntegerField, ForeignKey, \
-    DateTimeField, CASCADE
+    DateTimeField, ManyToManyField, CASCADE
 
 from users.models import User
 
@@ -27,5 +26,17 @@ class Ad(Model):
 
 
 class Comment(Model):
-    # TODO добавьте поля модели здесь
-    pass
+    """
+    Описывает комментарий
+    """
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+
+    def __str__(self):
+        return self.text
+
+    text = CharField(null=True, db_index=True, max_length=200)
+    ad = ForeignKey(Ad, null=True, on_delete=CASCADE)
+    author = ForeignKey(User, null=True, on_delete=CASCADE)
+    created_at = DateTimeField(null=True, auto_now_add=True)
