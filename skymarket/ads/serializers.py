@@ -1,7 +1,13 @@
 from rest_framework import serializers
 
+from .models import Ad
 
-# TODO Сериалайзеры. Предлагаем Вам такую структуру, однако вы вправе использовать свою
+
+class AdListViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ad
+        exclude = ["author", "created_at"]
+
 
 class CommentSerializer(serializers.ModelSerializer):
     # TODO сериалайзер для модели
