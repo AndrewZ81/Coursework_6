@@ -1,8 +1,6 @@
 from django.urls import include, path
-
-# TODO настройка роутов для модели
-
+from .views import AdListView
 
 urlpatterns = [
-
+    path('', AdListView.as_view(), name="ads_list"),
 ]

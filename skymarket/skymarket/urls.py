@@ -21,6 +21,7 @@ urlpatterns = [
     path('auth/', include('djoser.urls.jwt')),
     path('api/token/', TokenObtainPairView.as_view()),
     path('api/refresh/', TokenRefreshView.as_view()),
+    path('api/ads/', include('ads.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += users_router.urls
