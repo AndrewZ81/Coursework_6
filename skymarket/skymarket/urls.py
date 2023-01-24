@@ -5,12 +5,12 @@ from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from djoser.views import UserViewSet
 from rest_framework.routers import SimpleRouter
-
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 users_router = SimpleRouter()
 
 # Здесь мы регистрируем ViewSet,
 # который импортирован из приложения Djoser
-users_router.register("users", UserViewSet, basename="users")
+users_router.register("api/users", UserViewSet, basename="users")
 
 urlpatterns = [
     path("api/admin/", admin.site.urls),
@@ -19,6 +19,8 @@ urlpatterns = [
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name="schema")),
     path('auth/', include('djoser.urls.authtoken')),
     path('auth/', include('djoser.urls.jwt')),
+    path('api/token/', TokenObtainPairView.as_view()),
+    path('api/refresh/', TokenRefreshView.as_view()),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += users_router.urls
