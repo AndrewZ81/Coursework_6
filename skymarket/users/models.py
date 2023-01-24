@@ -41,7 +41,7 @@ class User(AbstractBaseUser):
     email = EmailField(db_index=True, unique=True, max_length=254)
     password = CharField(max_length=200)
     phone = PhoneNumberField()
-    role = CharField(max_length=5, choices=UserRoles.choices)
+    role = CharField(max_length=5, choices=UserRoles.choices, default=UserRoles.USER)
     image = ImageField(null=True, blank=True, upload_to="")
     is_active = BooleanField(default=True)
 
