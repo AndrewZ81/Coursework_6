@@ -36,12 +36,13 @@ class User(AbstractBaseUser):
     # должен управлять объектами этого типа.
     objects = UserManager()
 
-    first_name = CharField(db_index=True, max_length=200)
-    last_name = CharField(db_index=True, max_length=200)
-    email = EmailField(db_index=True, unique=True)
-    phone = PhoneNumberField(max_length=12)
+    first_name = CharField(db_index=True, max_length=64)
+    last_name = CharField(db_index=True, max_length=64)
+    email = EmailField(db_index=True, unique=True, max_length=254)
+    password = CharField(max_length=200)
+    phone = PhoneNumberField()
     role = CharField(max_length=5, choices=UserRoles.choices)
-    image = ImageField(null=True, blank=True, upload_to="django_media")
+    image = ImageField(null=True, blank=True, upload_to="")
     is_active = BooleanField(default=True)
 
     @property
