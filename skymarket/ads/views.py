@@ -3,7 +3,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from .models import Ad, Comment
-from .serializers import AdListViewSerializer
+from .serializers import AdListViewSerializer, AdDetailViewSerializer
 
 
 class AdListView(ListAPIView):
@@ -12,6 +12,27 @@ class AdListView(ListAPIView):
     """
     queryset = Ad.objects.all()
     serializer_class = AdListViewSerializer
+
+
+class AdMyListView(ListAPIView):
+    """
+    Отображает объявления текущего пользователя
+    """
+    def get_queryset(self):
+        return Ad.objects.filter(author_id=self.request.user.id)
+    serializer_class = AdListViewSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class AdDetailView(RetrieveAPIView):
+    """
+    Делает выборку записи из таблицы Объявления по id
+    """
+    queryset = Ad.objects.all()
+    serializer_class = AdDetailViewSerializer
+
+
+
 
 
 
