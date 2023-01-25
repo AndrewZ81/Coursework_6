@@ -1,6 +1,6 @@
 from django.db.models import Model
 from django.db.models import CharField, ImageField, PositiveIntegerField, ForeignKey, \
-    DateTimeField, ManyToManyField, CASCADE
+    DateTimeField, CASCADE
 
 from users.models import User
 
