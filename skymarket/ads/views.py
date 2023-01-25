@@ -29,10 +29,19 @@ class AdDetailView(RetrieveAPIView):
     Делает выборку записи из таблицы Объявления по id
     """
     queryset = Ad.objects.all()
+    serializer_classes = AdDetailViewSerializer
+
+
+class AdCreateView(CreateAPIView):
+    """
+    Cоздаёт новую запись таблицы Объявления
+    """
+    queryset = Ad.objects.all()
     serializer_class = AdDetailViewSerializer
+    permission_classes = [IsAuthenticated]
 
-
-
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 
 
