@@ -1,22 +1,32 @@
-from rest_framework import pagination, viewsets
-from rest_framework.generics import ListAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView, CreateAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import ListAPIView, ListCreateAPIView,\
+    RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from .permissions import AdRetrieveUpdateDestroyPermission
 
 from .models import Ad, Comment
 from .serializers import AdListViewSerializer, AdDetailViewSerializer
 
 
-class AdListView(ListAPIView):
+class AdListCreateView(ListCreateAPIView):
     """
-    Отображает таблицу Объявления
+    - GET кратко отображает все объявления
+    - POST создаёт новое объявление
     """
     queryset = Ad.objects.all()
-    serializer_class = AdListViewSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_serializer_class(self):
+        if self.request.user.is_authenticated and self.request.method == "POST":
+            return AdDetailViewSerializer
+        return AdListViewSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 
 class AdMyListView(ListAPIView):
     """
-    Отображает объявления текущего пользователя
+    Кратко отображает объявления текущего пользователя
     """
     def get_queryset(self):
         return Ad.objects.filter(author_id=self.request.user.id)
@@ -24,36 +34,12 @@ class AdMyListView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
 
-class AdDetailView(RetrieveAPIView):
+class AdRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     """
-    Делает выборку записи из таблицы Объявления по id
-    """
-    queryset = Ad.objects.all()
-    serializer_classes = AdDetailViewSerializer
-
-
-class AdCreateView(CreateAPIView):
-    """
-    Cоздаёт новую запись таблицы Объявления
+    - GET подробно отображает объявление по его id
+    - PUT (PATCH) обновляет объявление по его id
+    - DELETE удаляет объявление по его id
     """
     queryset = Ad.objects.all()
     serializer_class = AdDetailViewSerializer
-    permission_classes = [IsAuthenticated]
-
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
-
-
-
-class AdPagination(pagination.PageNumberPagination):
-    pass
-
-
-# TODO view функции. Предлагаем Вам следующую структуру - но Вы всегда можете использовать свою
-class AdViewSet(viewsets.ModelViewSet):
-    pass
-
-
-class CommentViewSet(viewsets.ModelViewSet):
-    pass
-
+    permission_classes = [IsAuthenticated, AdRetrieveUpdateDestroyPermission]
