@@ -61,3 +61,19 @@ class CommentListCreateView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user, ad_id=self.get_ad_pk())
+
+
+class CommentRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    """
+    - GET подробно отображает комментарий по его id
+    - PUT (PATCH) обновляет комментарий по его id
+    - DELETE удаляет комментарий по его id
+    """
+    serializer_class = CommentListViewSerializer
+    permission_classes = [IsAuthenticated, AdRetrieveUpdateDestroyPermission]
+
+    def get_comment_id(self):
+        return self.kwargs["pk"]
+
+    def get_queryset(self):
+        return Comment.objects.filter(id=self.get_comment_id())
