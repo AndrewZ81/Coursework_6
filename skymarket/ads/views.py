@@ -51,13 +51,13 @@ class CommentListCreateView(ListCreateAPIView):
     - POST создаёт новый комментарий к объявлению, выбранному по id
     """
     serializer_class = CommentListViewSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_ad_pk(self):
         return self.kwargs["ad_pk"]
 
     def get_queryset(self):
         return Comment.objects.filter(ad_id=self.get_ad_pk())
-    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user, ad_id=self.get_ad_pk())
