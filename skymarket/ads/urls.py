@@ -1,10 +1,9 @@
-from django.urls import include, path
-from .views import AdListView, AdDetailView, AdMyListView, AdCreateView
+from django.urls import path
+from .views import AdMyListView, AdListCreateView, AdRetrieveUpdateDestroyView
 
 urlpatterns = [
-    path('', AdListView.as_view(), name="ads_list"),
-    path('create/', AdCreateView.as_view(), name="ad_create"),
-    path('<int:pk>/', AdDetailView.as_view(), name="ad_detail"),
+    path('', AdListCreateView.as_view(), name="ads_list"),
+    path('<int:pk>/', AdRetrieveUpdateDestroyView.as_view(), name="ad_rud"),
     path('me/', AdMyListView.as_view(), name="my_ads_list"),
 
 ]
