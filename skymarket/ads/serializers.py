@@ -43,7 +43,7 @@ class CommentListViewSerializer(serializers.ModelSerializer):
     author_id = SerializerMethodField(required=False)
     author_first_name = SerializerMethodField()
     author_last_name = SerializerMethodField()
-    image = SerializerMethodField()
+    author_image = SerializerMethodField()
 
 
     class Meta:
@@ -65,5 +65,5 @@ class CommentListViewSerializer(serializers.ModelSerializer):
     def get_author_last_name(self, comment):
         return comment.author.last_name
 
-    def get_image(self, comment):
+    def get_author_image(self, comment):
         return comment.author.image.url if comment.author.image else None
